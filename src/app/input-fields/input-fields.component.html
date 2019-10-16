@@ -1,0 +1,55 @@
+<form [formGroup]="formCreate">
+  <mat-form-field class="input-create">
+    <input
+      matInput
+      formControlName="surname"
+      placeholder="Фамилия*"
+      autocomplete="off"
+    />
+    <mat-error *ngIf="formCreate.invalid">
+      Заполните поле!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="input-create">
+    <input
+      matInput
+      formControlName="name"
+      placeholder="Имя"
+      autocomplete="off"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="input-create">
+    <input
+      matInput
+      formControlName="patronName"
+      placeholder="Отчество"
+      autocomplete="off"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="input-create">
+    <span matPrefix>+375 &nbsp;</span>
+    <input
+      type="tel"
+      matInput
+      formControlName="telephone"
+      placeholder="Телефон*"
+      autocomplete="off"
+      placeholder="(XX) XXX XX XX"
+    />
+    <mat-error *ngIf="formCreate.invalid">
+      {{ formCreate.get('telephone').errors?.extention }}
+    </mat-error>
+  </mat-form-field>
+
+  <button
+    class="add-icon"
+    mat-icon-button
+    [disabled]="formCreate.invalid"
+    (click)="onCreateItem()"
+  >
+    <mat-icon>control_point</mat-icon>
+  </button>
+</form>

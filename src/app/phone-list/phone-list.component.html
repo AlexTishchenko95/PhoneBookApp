@@ -1,0 +1,52 @@
+<table mat-table [dataSource]="dataSource" class="phone-list">
+  <!-- Favorite Column -->
+  <ng-container matColumnDef="favorite">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <button mat-icon-button color="basic" (click)="onFavorite(i)">
+        <mat-icon>star</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Surname Column -->
+  <ng-container matColumnDef="surname">
+    <th mat-header-cell *matHeaderCellDef>Фамилия</th>
+    <td mat-cell *matCellDef="let element">{{ element.surname }}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Имя</th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+
+  <!-- Patron Name Column -->
+  <ng-container matColumnDef="patronName">
+    <th mat-header-cell *matHeaderCellDef>Отчество</th>
+    <td mat-cell *matCellDef="let element">{{ element.patronName }}</td>
+  </ng-container>
+
+  <!-- Telephone Column -->
+  <ng-container matColumnDef="telephone">
+    <th mat-header-cell *matHeaderCellDef>Телефон</th>
+    <td mat-cell *matCellDef="let element">{{ element.telephone }}</td>
+  </ng-container>
+
+  <!-- onDelete Column -->
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <button mat-icon-button color="warn" (click)="onDelete(i)">
+        <mat-icon>highlight_off</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<!-- <mat-icon color="accent">star</mat-icon> -->
+
+<!-- <a *ngFor="let item of data$ | async">{{ item }}</a> -->
