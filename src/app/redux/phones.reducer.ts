@@ -9,6 +9,10 @@ const initialState = {
     ]
 };
 
+
+// tslint:disable-next-line: prefer-const
+let favoriteList = [];
+
 export function phonesReducer(state = initialState, action: PhonesActions) {
     switch (action.type) {
         case PHONES_ACTION.ADD_NUMBER:
@@ -23,11 +27,21 @@ export function phonesReducer(state = initialState, action: PhonesActions) {
                 phoneList: [...state.phoneList]
             };
         case PHONES_ACTION.FAVORITE_NUMBER:
-            const elem = state.phoneList.splice(action.payload.id, 1);
-            return {
-                ...state,
-                phoneList: [elem[0], ...state.phoneList]
-            };
+            const [elemFavorite] = state.phoneList.splice(action.payload.id, 1);
+            const check = favoriteList.indexOf(elemFavorite);
+            if (check === -1) {
+                favoriteList.push(elemFavorite);
+                return {
+                    ...state,
+                    phoneList: [elemFavorite, ...state.phoneList]
+                };
+            } else {
+                const [offElemFav] = favoriteList.splice(check, 1);
+                return {
+                    ...state,
+                    phoneList: [...state.phoneList, offElemFav]
+                };
+            }
         default:
             return state;
     }
