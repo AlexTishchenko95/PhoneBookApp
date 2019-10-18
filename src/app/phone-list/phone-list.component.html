@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="dataSource" class="phone-list">
+<table mat-table [dataSource]="data$ | async" class="phone-list">
   <!-- Favorite Column -->
   <ng-container matColumnDef="favorite">
     <th mat-header-cell *matHeaderCellDef></th>

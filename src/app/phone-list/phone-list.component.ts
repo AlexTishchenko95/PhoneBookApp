@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { Store, createSelector, select } from '@ngrx/store';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store, createSelector } from '@ngrx/store';
 import { AppState } from '../redux/app.state';
 import { DeleteNumber, FavoriteNumber } from '../redux/phones.action';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { PhonePosition } from '../phone-position.model';
 
 export interface PhoneList {
   surname: string;
@@ -15,7 +15,7 @@ export interface PhoneList {
 const selectPhone = (state: AppState) => state.PhonePage;
 const selectPhoneList = createSelector(
   selectPhone,
-  (PhonePage) => PhonePage
+  (PhonePage) => PhonePage.phoneList
 );
 
 @Component({
@@ -24,21 +24,14 @@ const selectPhoneList = createSelector(
   styleUrls: ['./phone-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PhoneListComponent implements OnInit, OnDestroy {
-  destroy$: Subject<void> = new Subject<void>();
+export class PhoneListComponent implements OnInit {
 
-
-  constructor(private store: Store<AppState>, private cd: ChangeDetectorRef) { }
+  constructor(private store: Store<AppState>) { }
   displayedColumns = ['favorite', 'surname', 'name', 'patronName', 'telephone', 'delete'];
-  dataSource = [];
+  data$: Observable<PhonePosition[]>;
 
   ngOnInit() {
-    this.store.pipe(select(selectPhoneList))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(list => {
-        this.dataSource = list.phoneList;
-        this.cd.markForCheck();
-      });
+    this.data$ = this.store.select(selectPhoneList);
   }
 
   onDelete(pos) {
@@ -47,10 +40,5 @@ export class PhoneListComponent implements OnInit, OnDestroy {
 
   onFavorite(pos) {
     this.store.dispatch(new FavoriteNumber({ id: pos }));
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(null);
-    this.destroy$.complete();
   }
 }

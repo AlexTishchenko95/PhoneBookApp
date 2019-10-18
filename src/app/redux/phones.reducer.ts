@@ -6,12 +6,9 @@ const initialState = {
         new PhonePosition('Михайлов', 'Алексей', 'Архипович', '+375 29 121 51 36'),
         new PhonePosition('Мудячко', 'Кирилл', 'Иосифович', '+375 25 162 16 44'),
         new PhonePosition('Бойцов', 'Евгений', 'Онегинович', '+375 33 495 87 38')
-    ]
+    ],
+    favoriteList: []
 };
-
-
-// tslint:disable-next-line: prefer-const
-let favoriteList = [];
 
 export function phonesReducer(state = initialState, action: PhonesActions) {
     switch (action.type) {
@@ -26,22 +23,24 @@ export function phonesReducer(state = initialState, action: PhonesActions) {
                 ...state,
                 phoneList: [...state.phoneList]
             };
+
         case PHONES_ACTION.FAVORITE_NUMBER:
             const [elemFavorite] = state.phoneList.splice(action.payload.id, 1);
-            const check = favoriteList.indexOf(elemFavorite);
+            const check = state.favoriteList.indexOf(elemFavorite);
             if (check === -1) {
-                favoriteList.push(elemFavorite);
+                state.favoriteList.push(elemFavorite);
                 return {
                     ...state,
                     phoneList: [elemFavorite, ...state.phoneList]
                 };
             } else {
-                const [offElemFav] = favoriteList.splice(check, 1);
+                const [offElemFav] = state.favoriteList.splice(check, 1);
                 return {
                     ...state,
                     phoneList: [...state.phoneList, offElemFav]
                 };
             }
+
         default:
             return state;
     }
