@@ -5,11 +5,11 @@ import { AppState } from '../redux/app.state';
 import { PhonePosition } from '../phone-position.model';
 import { AddNumber } from '../redux/phones.action';
 
-function extentionValidator(control: FormControl): ValidationErrors {
-  if (control.value && +control.value.length >= 9) {
+function phoneValidator(control: FormControl): ValidationErrors {
+  if (control.value && control.value.length >= 9) {
     return null;
   }
-  return { extention: 'Неверный регион, либо формат номера' };
+  return { phoneWarning: 'Неверный регион, либо формат номера' };
 }
 
 @Component({
@@ -26,7 +26,7 @@ export class InputFieldsComponent {
       surname: new FormControl('', Validators.required),
       name: new FormControl(''),
       patronName: new FormControl(''),
-      telephone: new FormControl('', extentionValidator)
+      telephone: new FormControl('', phoneValidator)
     });
   }
 

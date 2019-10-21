@@ -40,7 +40,7 @@
       placeholder="(XX) XXX XX XX"
     />
     <mat-error *ngIf="formCreate.invalid">
-      {{ formCreate.get('telephone').errors?.extention }}
+      {{ formCreate.get('telephone').errors?.phoneWarning }}
     </mat-error>
   </mat-form-field>
 

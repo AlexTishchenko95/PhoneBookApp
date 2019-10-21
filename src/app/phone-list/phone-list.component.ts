@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store, createSelector } from '@ngrx/store';
 import { AppState } from '../redux/app.state';
 import { DeleteNumber, FavoriteNumber } from '../redux/phones.action';
+import { Observable } from 'rxjs';
+import { PhonePosition } from '../phone-position.model';
 
 export interface PhoneList {
   surname: string;
@@ -10,22 +12,26 @@ export interface PhoneList {
   telephone: string;
 }
 
+const selectPhone = (state: AppState) => state.PhonePage;
+const selectPhoneList = createSelector(
+  selectPhone,
+  (PhonePage) => PhonePage.phoneList
+);
+
 @Component({
   selector: 'app-phone-list',
   templateUrl: './phone-list.component.html',
-  styleUrls: ['./phone-list.component.scss']
+  styleUrls: ['./phone-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PhoneListComponent implements OnInit {
 
   constructor(private store: Store<AppState>) { }
-  displayedColumns: string[] = ['favorite', 'surname', 'name', 'patronName', 'telephone', 'delete'];
-  dataSource = [];
+  displayedColumns = ['favorite', 'surname', 'name', 'patronName', 'telephone', 'delete'];
+  data$: Observable<PhonePosition[]>;
 
   ngOnInit() {
-    this.store.select('PhonePage').subscribe(list$ => {
-      this.dataSource = list$.phoneList;
-      console.log(list$);
-    });
+    this.data$ = this.store.select(selectPhoneList);
   }
 
   onDelete(pos) {
